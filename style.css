@@ -1,0 +1,23 @@
+html {
+    background-color: hotpink;
+}
+
+body {
+    background-color: hotpink;
+    text-align: center;
+    font-family: cursive;
+
+}
+
+h1 {
+    color: rgb(252, 173, 173);
+    font-family: cursive;
+    text-shadow: 0cqmax;
+    text-decoration: underline;
+    text-align: center;
+}
+
+img {
+    width: 110%;
+    height: 110%;
+}
