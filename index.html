@@ -19,6 +19,308 @@
        <h1> Scan for an Enjoyable VR Experience</h1>
        <img src="images/ododd.png", alt = "Rizzler Singlehandedly Wins Knicks the NBA Final Game 5" style="width:40%; height:40%" >
        <img src="images/adrian_uy_berowra.jpg", alt="3 Tungs, No More, No Less.">
-       
+       <h1 id="9ct200-assessment-1-mechantronics">9CT200 Assessment 1 - Mechantronics</h1>
+<h2 id="by-charles-mcdonagh">By Charles McDonagh</h2>
+<h2 id="part-i-requirements-outline">Part I - Requirements Outline</h2>
+<h3 id="purpose">Purpose</h3>
+<p>I need to design and code a program for an EV3 robot to navigate a map and move two blocks to a zone. It must do this without either leaving the map, or touching two obsticles around the map. It must include at least two sensors, either a colour, ultrasonic or pressure sensor, or all three.</p>
+<h3 id="key-actions">Key Actions</h3>
+<ul>
+<li>Use a pressure sensor to detect the attachment of a block</li>
+<li>Use a colour sensor to detect the colour of a block</li>
+<li>Take a set path to avoid obsticles </li>
+<li>Use an ultrasonic sensor to detect the range of objects.</li>
+</ul>
+<h3 id="functional-requirements">Functional Requirements</h3>
+<ul>
+<li><strong>Block Detection</strong> - The robot must use a ultrasonic sensor to detect the location of block.</li>
+<li><strong>Block Classification</strong> - The robot must classify encountered blocks in terms of colour.</li>
+<li><strong>Block Avoidance</strong> - The robot must take a special path to avoid enemy blocks.</li>
+<li><strong>Block Movement</strong> - The robot must use a pressure sensor and an engineered system to pickup and move blocks.</li>
+</ul>
+<h3 id="use-cases">Use Cases</h3>
+<ol>
+<li><p><strong>Block Detection</strong> - Scenario: The robot detects a block 10 centimeters from it.</p>
+<ul>
+<li><p>Inputs: The ultrasonic sensor detects an object at the  10 cm mark.</p>
+</li>
+<li><p>Action: The robot more further forward to within the range of the colour sensor.</p>
+</li>
+<li><p>Expected Outcome: The robot allows for the colour sensor to classify the colour.</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Block Classifictation</strong> - Scenario: The robot has moved itself to classify an object that needs to be picked up.</p>
+<ul>
+<li><p>Inputs: The colour sensor detects the positive object.</p>
+</li>
+<li><p>Action: The robot uses it&#39;s grabber to pick up the object.</p>
+</li>
+<li><p>Expected Outcome: The robot gains control of the positive object.</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Block Avoidance</strong> - Scenario: The robot detects a negative block</p>
+<ul>
+<li><p>Inputs: The colour detection of a negative block.</p>
+</li>
+<li><p>Action: The robot takes a set path around the block to place itself ~ 10 centimeters forward of it&#39;s starting positions.</p>
+</li>
+<li><p>Expected Outcome: The robot is on the opposite side of the block without colliding with it.</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Block Movement</strong> - Scenario: The robot has picked up a positive block but does not know whether it is completely picked up</p>
+<ul>
+<li><p>Inputs: The pressure sensor on the grabber.</p>
+</li>
+<li><p>Action: The robot uses the pressure sensor to detect if the block is fully inserted/grabbed.</p>
+</li>
+<li><p>Expected Outcome: The robot confirms that the block will not move after pickup.</p>
+<h3 id="test-cases">Test Cases</h3>
+<p>| Test Case | Input     | Expected Output   |
+|---------- |---------- |----------------   |
+|Block Detection| The Ultrasonic sensor detects an object within 10cm|The robot moves forward to identify the object|
+|Block Classification|The colour sensor detects the colour of a block|The robot either picks up or avoids the block|
+|Block Avoidance|A negative block is detected by the classification|The robot moves away from the block in a set path|
+|Block Movement|A positive block is detected by the classification|The robot uses it&#39;s grabber to pickup the block.|</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="non-functional-requirements">Non-Functional Requirements</h3>
+<ul>
+<li>The robot should find it&#39;s path without extra movement un-needed.</li>
+<li>The robot should move around dangerous blocks without undue delay.</li>
+<li>The robot should aim to grab and pickup the block without a large number of undue tries.</li>
+</ul>
+<h2 id="part-ii-pseudocode-and-flowcharts">Part II - Pseudocode and Flowcharts</h2>
+<h3 id="pseudocode">Pseudocode</h3>
+<p><strong>Main Loop</strong></p>
+<pre><code><span class="hljs-keyword">BEGIN
+</span>   <span class="hljs-meta">WHILE</span> <span class="hljs-keyword">block_counter </span>&gt; <span class="hljs-number">2</span>
+      <span class="hljs-keyword">block_search
+</span>      <span class="hljs-keyword">block_check
+</span>      <span class="hljs-keyword">block_return
+</span>   ENDWHILE
+<span class="hljs-symbol">END</span>
+</code></pre><p><strong>block_search</strong></p>
+<pre><code><span class="hljs-keyword">BEGIN</span>
+counter1 = <span class="hljs-number">30</span>
+counter2 = <span class="hljs-number">60</span>
+   <span class="hljs-keyword">WHILE</span> block_found = <span class="hljs-literal">False</span> <span class="hljs-keyword">and</span> block_grabbed = <span class="hljs-literal">False</span>
+      <span class="hljs-keyword">while</span> counter1 &gt; <span class="hljs-number">0</span>
+        Turn <span class="hljs-number">1</span> degree <span class="hljs-keyword">right</span>
+        <span class="hljs-keyword">READ</span> ultrasonic_sensor
+        <span class="hljs-keyword">IF</span> ultrasonic_sensor &gt; detect distance:
+           block_found = <span class="hljs-literal">True</span> 
+           counter1 = <span class="hljs-number">0</span>
+           counter2 = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">ELSE</span>:
+           counter1 =- <span class="hljs-number">1</span>
+      <span class="hljs-keyword">while</span> counter2 &gt; <span class="hljs-number">0</span> 
+        Turn <span class="hljs-number">1</span> degree <span class="hljs-keyword">left</span>
+        <span class="hljs-keyword">READ</span> ultrasonic_sensor
+        <span class="hljs-keyword">IF</span> ultrasonic_sensor &gt; detect distance:
+           block_found = <span class="hljs-literal">True</span> 
+           counter1 = <span class="hljs-number">0</span>
+           counter2 = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">ELSE</span>:
+           counter2 =- <span class="hljs-number">1</span>
+      Turn <span class="hljs-number">30</span> <span class="hljs-keyword">degrees</span> <span class="hljs-keyword">right</span>
+      <span class="hljs-keyword">Move</span> forward <span class="hljs-number">10</span> centimeters
+<span class="hljs-keyword">END</span>
+</code></pre><p><strong>block_check</strong></p>
+<pre><code><span class="hljs-keyword">BEGIN</span>
+   <span class="hljs-keyword">WHILE</span> block_found = <span class="hljs-literal">True</span> <span class="hljs-keyword">and</span> block_grabbed = <span class="hljs-literal">False</span>
+      <span class="hljs-keyword">READ</span> ultrasonic_sensor
+      <span class="hljs-keyword">WHILE</span> ultrasonic_sensor &gt; check_distance
+        <span class="hljs-keyword">Move</span> forward <span class="hljs-number">2.5</span> centimeters
+        <span class="hljs-keyword">READ</span> ultrasonic_sensor
+    <span class="hljs-keyword">Move</span> colour sensor <span class="hljs-keyword">to</span> foward <span class="hljs-keyword">position</span>
+    <span class="hljs-keyword">IF</span> colour_sensor = red <span class="hljs-keyword">or</span> yellow
+       <span class="hljs-keyword">Move</span> foward <span class="hljs-keyword">to</span> contact
+       Colour sensor <span class="hljs-keyword">to</span> down <span class="hljs-keyword">position</span>
+       block_grabbed = <span class="hljs-literal">True</span>
+       block_found = <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">ELSE</span>
+       <span class="hljs-keyword">Move</span> back distance
+       Turn <span class="hljs-keyword">left</span> <span class="hljs-number">90</span> <span class="hljs-keyword">degrees</span>
+       <span class="hljs-keyword">Move</span> forward distance
+       Turn <span class="hljs-keyword">right</span> <span class="hljs-number">90</span> <span class="hljs-keyword">degrees</span>
+       <span class="hljs-keyword">Move</span> forward distance x <span class="hljs-number">2</span>
+       Turn <span class="hljs-keyword">right</span> <span class="hljs-number">90</span> <span class="hljs-keyword">degrees</span>
+       <span class="hljs-keyword">Move</span> forward distance
+       Turn <span class="hljs-keyword">left</span> <span class="hljs-number">90</span> <span class="hljs-keyword">degrees</span>
+       block_found = <span class="hljs-literal">False</span>
+   ENDWHILE
+<span class="hljs-keyword">END</span>
+</code></pre><h3 id="flowcharts">Flowcharts</h3>
+<p><img src="/Images/mainloop%20flowchart.png" alt="Main Loop" title="Main Loop"></p>
+<p><img src="/Images/block_search%20flowchart.png" alt="block_search" title="block_search"></p>
+<p><img src="/Images/block_check%20flowchart.png" alt="block_check" title="block_check"></p>
+<h2 id="part-iii-development-and-testing">Part III - Development and Testing</h2>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Input</th>
+<th>Expected Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block Detection</td>
+<td>The Ultrasonic sensor detects an object within 10cm</td>
+<td>The robot moves forward to identify the object</td>
+</tr>
+</tbody>
+</table>
+<p>This test case was relatively easy to accomplish, using this simple section of code. No extra development was required, due to the simplistic nature of the case. This case was absolutely successful, with only mininmal testing required to ensure it worked. The only possible improvement could be somehow increasing the speed, though this would come at the cost of possibly hitting a negative block.</p>
+<pre><code class="lang-python"><span class="hljs-keyword">if</span> block_found == <span class="hljs-literal">True</span> <span class="hljs-literal">and</span> block_grabbed == <span class="hljs-literal">False</span>:
+    <span class="hljs-keyword">while</span> ultrasonicsensor.distance() &gt; check_block_distance:
+        robot.straight(<span class="hljs-number">2.5</span>) #robot moves forward slowly <span class="hljs-keyword">to</span> detect distance
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Input</th>
+<th>Expected Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block Classification</td>
+<td>The colour sensor detects the colour of a block</td>
+<td>The robot either picks up or avoids the block</td>
+</tr>
+</tbody>
+</table>
+<p>This test case was slightly harder to code, as it required the construction of the physical sensor motor. Though after this was complete, it was simply a need to code a few if statements to create the checking. The physical motor may not be the most efficient way to check the colour for both the ground and blocks, but aside from using a second sensor, it was the msot obvious to my group at the time, as we all used it. The current_colour mode of the mode of the sensor took some getting used to, as we had only previously used the reflection version.</p>
+<pre><code class="lang-py"><span class="hljs-keyword">if</span> block_found == True and block_grabbed == False:
+    while ultrasonic_sensor.distance() &gt; check_block_distance:
+        robot.straight(<span class="hljs-number">2.5</span>) <span class="hljs-selector-id">#robot</span> moves forward slowly to detect distance
+    robot_motor<span class="hljs-selector-class">.run_angle</span> (-<span class="hljs-number">90</span>,<span class="hljs-number">90</span>) <span class="hljs-selector-id">#moves</span> the colour detector to forward
+    <span class="hljs-keyword">if</span> current_color == Color<span class="hljs-selector-class">.RED</span> or Color<span class="hljs-selector-class">.YELLOW</span>:
+        wait(<span class="hljs-number">30</span>) <span class="hljs-selector-id">#moves</span> the robot forward so that the block is being pushed
+        robot.straight(<span class="hljs-number">2.5</span>)
+        sensor_motor<span class="hljs-selector-class">.run_angle</span> (<span class="hljs-number">90</span>,<span class="hljs-number">90</span>) <span class="hljs-selector-id">#moves</span> the colour detector back to down
+        block_found = False
+        block_grabbed = True
+    <span class="hljs-keyword">else</span>:
+        ev3<span class="hljs-selector-class">.screen</span><span class="hljs-selector-class">.print</span>(<span class="hljs-string">"Bad block found"</span>)
+        ev3<span class="hljs-selector-class">.screen</span><span class="hljs-selector-class">.print</span>(current_color)
+        ev3<span class="hljs-selector-class">.screen</span><span class="hljs-selector-class">.clear</span>()
+        robot.straight(-<span class="hljs-number">10</span>) <span class="hljs-selector-id">#Moves</span> the robot <span class="hljs-number">10</span> ahead of the bad block
+        robot.turn(-<span class="hljs-number">90</span>)
+        robot.straight(<span class="hljs-number">10</span>)
+        robot.turn(<span class="hljs-number">90</span>)
+        robot.straight(<span class="hljs-number">20</span>)
+        robot.turn(<span class="hljs-number">10</span>)
+        robot.straight(<span class="hljs-number">10</span>)
+        robot.turn(-<span class="hljs-number">90</span>)
+        sensor_motor<span class="hljs-selector-class">.run_angle</span> (<span class="hljs-number">90</span>,<span class="hljs-number">90</span>)
+        block_found = False
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Input</th>
+<th>Expected Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block Avoidance</td>
+<td>A negative block is detected by the classification</td>
+<td>The robot moves away from the block in a set path</td>
+</tr>
+</tbody>
+</table>
+<p>This case was possibly the easiest, and was so simple it could be included in the code snippet for the previous case. The only issues that were encountered were to do with the distances the robot had to move. To ensure there was no unnecessary bumping, the distances had to be perfected. This hardcoding likely isn&#39;t optimal, and a simple 90 degree turn may have been possible, but it was included in order to ensure that the robot did not accidentally end in a loop of constantly detecting and checking the same block.</p>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Input</th>
+<th>Expected Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block Movement</td>
+<td>A positive block is detected by the classification</td>
+<td>The robot uses it&#39;s grabber to pickup the block.</td>
+</tr>
+</tbody>
+</table>
+<p>This case was actually abandoned soon into the hardware stage of development, as the idea of having another motor placed at the front of the robot, alongside the sensor motor would have been too much. Rather, it was replaced with a pushing mechanism, where the two forward sensors (the pressure and colour) would inadvertantly contain a small section of containment, enough for the small turns the robot would undertake. Another motor probably could have been included, but the weight on the front way already getting heavy, and to risk having the front dragging, making all movement measurements somewhat invalid made no sense. Some element of risk is still involved, as the smaller grapplers the sensor make up are more likely to miss the block, but this is considered an accceptable chance.</p>
+<p>Also included are two other programs that were made to test the colour sensor&#39;s colour testing mode and the sensor movement mechanism.</p>
+<p>The test program used to test the movement of the sensor movement mechanism&#39;s various iterations.</p>
+<pre><code class="lang-python"><span class="hljs-string">"""Used to test the movement of the colour sensor's motor, using run_angle to move the motor at 
+a speed of 90 degrees per second for 90 degrees, to stop the motor from hitting the ground or the wheels.
+It then moves it back to it's previous position."""</span>
+
+sensor_motor.run_angle(<span class="hljs-number">90</span>, <span class="hljs-number">90</span>)
+sensor_motor.run_angle(<span class="hljs-number">90</span>, -<span class="hljs-number">90</span>)
+</code></pre>
+<p>The test program used to test the color sensor&#39;s color sensing ability.</p>
+<pre><code class="lang-py"><span class="hljs-string">"""Tests the colour sensor, to detect the two good blocks (red or yellow), making one beep
+unrecognised blocks or undetect makes two beeps."""</span>
+
+
+<span class="hljs-keyword">if</span> colour_sensor.color() == Color.RED <span class="hljs-keyword">or</span> Color.YELLOW:
+    <span class="hljs-comment">#pick up here</span>
+    speaker.beep()
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-comment">#move back here and turn 90 degrees</span>
+    speaker.beep()
+    speaker.beep()
+</code></pre>
+<h2 id="part-iv-evaluation">Part IV - Evaluation</h2>
+<h3 id="peer-evaluation-fraser-maple">Peer Evaluation - Fraser Maple</h3>
+<p><em>When rating 1-5 with 1 being lacklustre effort and 5 being outstanding effort, how much effort do you feel this group member put into this project</em></p>
+<p><strong>3/5</strong></p>
+<p><em>Explain the reason for this score in detail:</em></p>
+<p>I think Fraser did well with the time we were all given. Though his code wasn&#39;t necessarily as influental towards the final group code was as Oscar&#39;s, he still wrote a full program, of which elements were used in my final code. He also put plenty of effort into the theory components and the ideation stage of the design.</p>
+<p><em>When rating 1-5 with 1 being not at all and 5 being an exceptional amount, how much did this team member contribute to the team&#39;s efforts throughout this project?</em></p>
+<p><strong>3/5</strong></p>
+<p><em>Explain the reason for this score in detail:</em></p>
+<p>Again, though Fraser&#39;s code was less vital for the group&#39;s efforts than Oscar&#39;s and mine, it still contributed greatly to what was required, and the theory and ideation aspects included can&#39;t be missed.</p>
+<p><em>When rating 1-5 with 1 being entirely non-functional and 5 being completely functional, how effective was this team member&#39;s final test case?</em></p>
+<p><strong>4/5</strong></p>
+<p><em>Explain the reason for this score in detail:</em></p>
+<p>Honestly, I didn&#39;t see much of the testing of his final test case, and as far as I&#39;m sure, it wasn&#39;t tested very thoroughly at all, but this is mostly due to the various technical issues we and the class experienced in attempting to test our robots. Having read through the code on occasion, it seemed solid, and with testing could well have been successful.</p>
+<p><em>When rating 1-5 with 1 being not well at all and 5 being exceptionally well, how well do you think this team member performed throughout all stages of the project?</em></p>
+<p><strong>4/5</strong></p>
+<p><em>Explain the reason for this score in detail:</em></p>
+<p>I think, in total, given the various issues and problems the group was faced with both individually and as a whole, Fraser fared well in the totality of the project, and through this, came out with what would have been a successful piece of code. </p>
+<h3 id="peer-evaluation-oscar-dodd">Peer Evaluation - Oscar Dodd</h3>
+<p><em>When rating 1-5 with 1 being lacklustre effort and 5 being outstanding effort, how much effort do you feel this group member put into this project</em></p>
+<p><strong>5/5</strong></p>
+<p><em>Explain the reason for this score in detail:</em></p>
+<p>Oscar put in plenty of effort in the project, withot a doubt. I think it likely outpaces mine, and his discussions during the ideation stage were vital. I&#39;ve borrowed various pieces of his code for my final piece of code, and he&#39;s done the same with mine.</p>
+<p><em>When rating 1-5 with 1 being not at all and 5 being an exceptional amount, how much did this team member contribute to the team&#39;s efforts throughout this project?</em></p>
+<p><strong>5/5</strong></p>
+<p><em>Explain the reason for this score in detail:</em></p>
+<p>Oscar&#39;s contributions, both in the hardware department, and in the coding sections, were very clear to me. He did the majority of the engineering work for the sensor motor, and this section was, as an example, used by all of the team.</p>
+<p><em>When rating 1-5 with 1 being entirely non-functional and 5 being completely functional, how effective was this team member&#39;s final test case?</em></p>
+<p><strong>4/5</strong></p>
+<p><em>Explain the reason for this score in detail:</em></p>
+<p>Oscar&#39;s code I believe was very similar to mine in the end, having borrowed heavily from eachother. His does, I believe, lack the organisation of functions, all being executed in a while True loop. Otherwise, having read through and watched tests, I believe the code would have been extremely successful with extra testing.</p>
+<p><em>When rating 1-5 with 1 being not well at all and 5 being exceptionally well, how well do you think this team member performed throughout all stages of the project?</em></p>
+<p><strong>5/5</strong></p>
+<p><em>Explain the reason for this score in detail:</em></p>
+<p>From the theory to the actual coding and testing, Oscar was useful to all the members of the team, both as someone to bounce ideas and code off of, to working on his own code. His performance was, in my opinion, vital to the success of my code, at least.</p>
+<h3 id="personal-evaluation">Personal Evaluation</h3>
+<p>I feel my final test comparative to my functional criteria was obviously poor. A bug caused it to immedately malfunction and and having detected a block, do a full 30 degree turn to the right, before driving straight forwards, likely attempting to find a block that did not exist. It&#39;s possible this 30 degree turn was caused by the while loop the searching program existed in, though the changing of the block_found value to True should have broken the loop regardless. Besides this failure, should the rest of the code have gone to plan, I believe I will have accomplished all my functional criteria, besides the abandoned grabber.</p>
+<p>Again, due to the undue bug that was fixed too late on the friday of the test, the accomplishment of any tests were impossible, but besides this loss, mainly due to technical issues preceeding the final development of the code, I believe the code should have accomplished the majority of it&#39;s non-functional requirements. Though again, this includes a section on the abandoned grabber. Otherwise, movement and avoidance without undue delay would likely have been accomplished, without any unneeded movement included in the code.</p>
+<p>Despite the fact my group was beset with a number of challenges and bugs, having read through all fo our codes, I believe that with additional time for bugfixing, all of our codes should have been able to complete our goal, without any issues in the execution. Despite having our codes beset by bugs, we did manage to, at the very least, construct working hardware for our robot, and with the time to impliment our ideas, they should all have worked.</p>
+<p>I feel as if I managed my time when working somewhat well, though there were obviously challenges, especially with the nature of the robots, cables and the various other challenges, I feel my development timeline was not perfect, but was manageable, and I did a good job managing the time I did have for testing and coding in class.</p>
+<p>My code is, essentially, a team collaboration, with sections borrowed from both Oscar and Fraser, and I feel our team worked well together. We didn&#39;t have many disagreements, and they were settled easily when they did arise. Our group work on the hardware of the robot, especially the colour motor, was 100% a group effort, in both designing and engineering the piece. </p>
+<p>Beyond bugfixing, a number of improvement could be made to the final product. First and foremost, if a smaller frame for the robot was available, it could be of great use to the group, as it would allow the movement of the robot around the various blocks could be made much more efficient. In addition, with more time, I believe that the addition of a more specialised grabber may have been possible, of possibly a spear design, with sufficient counterwight at the back of the robot, could have improvement the reliability of the block movement phase of the program.</p>
+
     </body>
 </html>
