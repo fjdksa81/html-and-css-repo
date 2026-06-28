@@ -4,7 +4,7 @@ html {
 
 body {
     background-color: hotpink;
-    text-align: center;
+    text-align: left;
     font-family: cursive;
 
 }
@@ -15,6 +15,11 @@ h1 {
     text-shadow: 0cqmax;
     text-decoration: underline;
     text-align: center;
+}
+
+h2 {
+    color: blanchedalmond;
+    text-align: centre;
 }
 
 img {
